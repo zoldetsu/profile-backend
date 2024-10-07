@@ -14,6 +14,6 @@ router.post("/addpost", auth, AddPost);
 router.get("/getposts", auth, getAll);
 router.get("/getone", auth, getOne);
 router.post("/editpost", auth, editPost);
-router.delete("/deletepost", auth, removePost);
+router.delete("/deletepost/:id", auth, removePost);
 
 export default router;

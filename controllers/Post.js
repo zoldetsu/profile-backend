@@ -9,6 +9,10 @@ export const AddPost = async (req, res) => {
         text: arrText,
         userId: req.user.id,
       },
+      include: {
+        likes: true,
+        user: true,
+      },
     });
 
     return res.status(201).json(post);
@@ -41,7 +45,7 @@ export const removePost = async (req, res) => {
       where: { id },
     });
 
-    res.status(204).json("OK");
+    res.status(204).json(post);
   } catch (err) {
     return res.status(500).json({
       message: "Не удалось удалить пост",
