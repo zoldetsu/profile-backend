@@ -59,6 +59,11 @@ export const getOne = async (req, res) => {
   try {
     const post = await prisma.post.findFirst({
       where: { id },
+      include: {
+        likes: true,
+        user: true,
+        createdComment: true,
+      },
     });
 
     res.status(200).json(post);

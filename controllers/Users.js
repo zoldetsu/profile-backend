@@ -12,6 +12,7 @@ export const register = async (req, res) => {
     const uniqueEmail = await prisma.user.findFirst({
       where: { email },
     });
+
     if (uniqueEmail) {
       return res.status(400).json({
         message: "Этот емайл уже создан",
@@ -33,9 +34,7 @@ export const register = async (req, res) => {
 
     if (user && secret) {
       res.status(201).json({
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
+        ...user,
         token: jwt.sign({ id: user.id }, secret, { expiresIn: "30d" }),
       });
     } else {
@@ -71,9 +70,7 @@ export const login = async (req, res) => {
 
     if (user && isPasswordCorrect && secret) {
       res.status(200).json({
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
+        ...user,
         token: jwt.sign({ id: user.id }, secret, { expiresIn: "30d" }),
       });
     }
