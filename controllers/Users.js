@@ -30,7 +30,6 @@ export const register = async (req, res) => {
     });
 
     const secret = process.env.JWT_SECRET;
-    console.log(secret);
 
     if (user && secret) {
       res.status(201).json({
@@ -95,14 +94,3 @@ export const getMe = async (req, res) => {
   }
 };
 
-export const getUserForPost = async (req, res) => {
-  const { userId } = req.body;
-
-  const data = await prisma.user.findFirst({
-    where: {
-      id: userId,
-    },
-  });
-  const { avatarUrl, fullName } = data;
-  res.json({ avatarUrl, fullName });
-};

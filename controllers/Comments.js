@@ -17,13 +17,14 @@ export const addComment = async (req, res) => {
         userId: userId,
         postId: postId,
       },
+      include: {
+        user: true,
+      },
     });
 
     res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({
-      message: "Не удалось добавить комментарий",
-    });
+    res.status(400).json(err);
   }
 };
 
@@ -42,5 +43,25 @@ export const removeComment = async (req, res) => {
     res.status(400).json({
       message: "Ошибка в удалении комментария",
     });
+  }
+};
+
+// * этот контроллер не обязателен, ведь при получении информации о посте уже
+// * содержится массив комметариев
+
+export const getCommnets = async (req, res) => {
+  const postId = req.params.id;
+  try {
+    const listComment = await prisma.comment.findMany({
+      where: {
+        postId: postId,
+      },
+      include: {
+        user: true,
+      },
+    });
+    res.json(listComment);
+  } catch (err) {
+    res.status(400).json(err);
   }
 };

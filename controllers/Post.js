@@ -12,6 +12,7 @@ export const AddPost = async (req, res) => {
       include: {
         likes: true,
         user: true,
+        createdComment: true,
       },
     });
 

@@ -12,7 +12,7 @@ export const auth = async (req, res, next) => {
         id: decoded.id,
       },
     });
-    console.log(user);
+
     req.user = user;
 
     next();
