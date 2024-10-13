@@ -10,9 +10,7 @@ import cors from "cors";
 const app = express();
 donenv.config();
 
-
 async function main() {
-  
   app.use(express.json());
   app.use(cors());
   app.use("/uploads", express.static("uploads"));
@@ -20,7 +18,7 @@ async function main() {
   app.use("/api/post", routerPost);
   app.use("/api/comment", routerComment);
   app.use("/api/profile", routerFollower);
-  app.use("/api/post", routerLike);
+  app.use("/api/likes", routerLike);
   app.listen("4000", () => {
     console.log("server ok");
   });

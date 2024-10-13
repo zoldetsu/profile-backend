@@ -4,7 +4,7 @@ import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/likeit", auth, likeIt);
-router.delete("/unlike", auth, unLike);
+router.post("/like", auth, likeIt);
+router.delete("/unlike/:id", auth, unLike);
 
 export default router;

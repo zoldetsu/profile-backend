@@ -1,10 +1,26 @@
 import { prisma } from "../prisma/prisma-client.js";
 
 export const likeIt = async (req, res) => {
-  const postId = req.body?.id;
-  const userId = req.user?.id;
+  const postId = req.body.postId;
+  const userId = req.user.id;
+
+  if (!postId) {
+    return res.status(400).json({ error: "Все поля обязательны" });
+  }
 
   try {
+    const existLike = await prisma.like.findFirst({
+      where: { postId: postId, userId: userId },
+      include: {
+        post: true,
+      },
+    });
+
+    if (existLike) {
+      return res.status(400).json({
+        error: "повторный запрос на лайк, при условии, что он уже поставлен",
+      });
+    }
     const like = await prisma.like.create({
       data: {
         postId: postId,
@@ -21,7 +37,7 @@ export const likeIt = async (req, res) => {
 };
 
 export const unLike = async (req, res) => {
-  const likeId = req.body.id;
+  const likeId = req.params.id;
   try {
     const like = await prisma.like.delete({
       where: {

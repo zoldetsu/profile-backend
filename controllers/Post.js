@@ -56,7 +56,7 @@ export const removePost = async (req, res) => {
 
 export const getOne = async (req, res) => {
   const id = req.params.id;
-
+  const userId = req.user.id;
   try {
     const post = await prisma.post.findFirst({
       where: { id },
@@ -67,7 +67,11 @@ export const getOne = async (req, res) => {
       },
     });
 
-    res.status(200).json(post);
+    const postWithLike = {
+      ...post,
+      likedByUser: post.likes.some((like) => like.userId === userId),
+    };
+    res.status(200).json(postWithLike);
   } catch (err) {
     res.status(500).json({
       message: "Не удалось получить пост",
@@ -76,7 +80,6 @@ export const getOne = async (req, res) => {
 };
 
 export const getAll = async (req, res) => {
-  const id = req.params.id;
   const userId = req.user.id;
   try {
     const posts = await prisma.post.findMany({
