@@ -42,14 +42,24 @@ export const removePost = async (req, res) => {
   const id = req.params.id;
 
   try {
+    await prisma.like.deleteMany({
+      where: {
+        postId: id,
+      },
+    });
+    await prisma.comment.deleteMany({
+      where: {
+        postId: id,
+      },
+    });
     const post = await prisma.post.delete({
-      where: { id },
+      where: { id: id },
     });
 
     res.status(204).json(post);
   } catch (err) {
     return res.status(500).json({
-      message: "Не удалось удалить пост",
+      message: err,
     });
   }
 };
