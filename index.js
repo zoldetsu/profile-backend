@@ -19,6 +19,7 @@ async function main() {
   app.use("/api/comment", routerComment);
   app.use("/api/profile", routerFollower);
   app.use("/api/likes", routerLike);
+  app.use("/api/follow", routerFollower);
   app.listen("4000", () => {
     console.log("server ok");
   });

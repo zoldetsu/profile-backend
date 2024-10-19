@@ -20,16 +20,16 @@ export const Subscribe = async (req, res) => {
   }
 };
 
-export const unsubscribe = async (req, res) => {
-  const FollowId = req.body.id;
-
+export const Unsubscribe = async (req, res) => {
+  const FollowId = req.params.id;
+  console.log(FollowId);
   try {
-    const Follow = prisma.follows.delete({
+    const Follow = await prisma.follows.delete({
       where: {
         id: FollowId,
       },
     });
-
+    console.log(Follow);
     res.status(204).json("OK");
   } catch (err) {
     console.log(err);

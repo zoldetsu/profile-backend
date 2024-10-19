@@ -26,6 +26,7 @@ export const register = async (req, res) => {
         fullName,
         email,
         password: hashedPassword,
+        avatarUrl: "/uploads/new_ava.jpg",
       },
     });
 
@@ -90,6 +91,51 @@ export const getMe = async (req, res) => {
   } catch {
     res.status(400).json({
       message: "Ошибка авторизации",
+    });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        followers: true,
+        following: true,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({
+      message: "не удалось получиться пользователя",
+    });
+  }
+};
+
+export const uptate = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        fullName: req.body.fullName,
+        location: req.body.location,
+        description: req.body.description,
+        avatarUrl: req.body.avatarUrl,
+      },
+    });
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({
+      message: "не удалось обновить данные",
     });
   }
 };

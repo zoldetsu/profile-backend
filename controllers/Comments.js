@@ -59,6 +59,9 @@ export const getCommnets = async (req, res) => {
       include: {
         user: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     res.json(listComment);
   } catch (err) {

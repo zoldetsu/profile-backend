@@ -11,6 +11,10 @@ export const auth = async (req, res, next) => {
           where: {
             id: decoded.id,
           },
+          include: {
+            followers: true,
+            following: true,
+          },
         });
         req.user = user;
         next();

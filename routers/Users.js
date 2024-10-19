@@ -1,6 +1,12 @@
 import express from "express";
 import multer from "multer";
-import { getMe, login, register } from "../controllers/Users.js";
+import {
+  getMe,
+  getUserById,
+  login,
+  register,
+  uptate,
+} from "../controllers/Users.js";
 import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -26,4 +32,6 @@ router.post("/upload", auth, upload.single("image"), (req, res) => {
 router.post("/register", register);
 router.post("/login", login);
 router.get("/me", auth, getMe);
+router.get("/getuser/:id", auth, getUserById);
+router.put("/update/:id", auth, uptate);
 export default router;
