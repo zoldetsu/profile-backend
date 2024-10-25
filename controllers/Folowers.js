@@ -10,6 +10,7 @@ export const Subscribe = async (req, res) => {
         followerId: followerId,
         followingId: followingId,
       },
+      include: {},
     });
     res.status(200).json(follow);
   } catch (err) {
@@ -34,4 +35,42 @@ export const Unsubscribe = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const getFollowing = async (req, res) => {
+  const userId = req.params.id;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: { followers: true, following: true },
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const { followers, following, ...userData } = user;
+
+  res.status(200).json(following);
+};
+
+export const getFollowers = async (req, res) => {
+  const userId = req.params.id;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: { followers: true, following: true },
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const { followers, following, ...userData } = user;
+
+  res.status(200).json(followers);
 };
